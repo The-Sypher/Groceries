@@ -1,0 +1,1 @@
+Don't Make changes to inventory.csv and members.csv, the program will make the changes for you
