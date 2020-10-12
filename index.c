@@ -16,9 +16,19 @@ struct MEMBER
   char name[50];
   int id;
   int number_of_donation;
-  struct MEMBER *next;
 }mem[100];
 int mem_count;
+
+struct bill
+{
+  float subtotal;
+  float gst;
+  float discount;
+  float total;
+  int item_number[53];
+  int item_quantity[53];
+  char cust_name[];
+};
 
 void member_reading()
 {
@@ -122,5 +132,5 @@ void print()
 
 int main()
 {
-    return 0;
+  return 0;
 }
