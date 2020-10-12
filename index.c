@@ -115,6 +115,10 @@ void inventory_updation()
     }
   }
 }
+void print()
+{
+  printf("Test");
+}
 
 int main()
 {
