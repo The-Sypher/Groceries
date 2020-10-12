@@ -11,7 +11,6 @@ struct INVENTORY
   float item_price;
   struct INVENTORY *next;
 }item[53];
-// Hello kaisan ba
 
 struct MEMBER
 {
@@ -37,7 +36,7 @@ void update_inventory()
   int i;
   for(i=0;i<54;i++)
   {
-    item[i].item_quantity = item[i].item_quantity - bill.item_quantity[i]; 
+    item[i].item_quantity = item[i].item_quantity - bill.item_quantity[i];
   }
 }
 bool check_if_possible(int item_number, int quantity)
