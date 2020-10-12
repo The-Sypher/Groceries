@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 struct INVENTORY
 {
   char item_name[50];
@@ -19,7 +20,7 @@ struct MEMBER
 }mem[100];
 int mem_count;
 
-struct bill
+struct INVOICE
 {
   float subtotal;
   float gst;
@@ -28,8 +29,27 @@ struct bill
   int item_number[53];
   int item_quantity[53];
   char cust_name[];
-};
+}bill;
 
+void update_inventory()
+{
+  int i;
+  for(i=0;i<54;i++)
+  {
+    item[i].item_quantity = item[i].item_quantity - bill.item_quantity[i]; 
+  }
+}
+bool check_if_possible(int item_number, int quantity)
+{
+  if(item[item_number-101].item_quantity >=  quantity)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
 void member_reading()
 {
   FILE *member;
