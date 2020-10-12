@@ -11,6 +11,7 @@ struct INVENTORY
   float item_price;
   struct INVENTORY *next;
 }item[53];
+// Hello kaisan ba
 
 struct MEMBER
 {
