@@ -31,6 +31,48 @@ struct INVOICE
   char cust_name[];
 }bill;
 
+int check(int id)
+{
+  FILE *emp;
+  int flag=-1,temp;
+  emp=fopen("employees.csv","r");
+  char line[100];
+  while(fgets(line,100,emp))
+  {
+    temp=atoi(strtok(line,","));
+    if(temp==id)
+    {
+      flag=1;break;
+    }
+  }
+  return flag;
+}
+void goodjob(int id)
+{
+  FILE *emp,*temp;
+  int i=0,ti;
+  emp=fopen("employees.csv","r");
+  temp=fopen("temp.csv","w");
+  char line[100],newline[100],*t;
+  while(fgets(line,100,emp))
+  {
+    t=strtok(line,",");
+    if((int)t!=id)
+      fprintf(temp,"%s\n",line);
+    else
+    {
+      strcat(newline,t);
+      t=strtok(NULL,",");
+      ti=1+atoi(t);
+      sprintf(t,"%d",ti);
+      strcat(newline,t);
+      strcpy(newline,strtok(NULL,"\n"));
+      strcpy(newline,"\n");
+      fprintf(emp,newline);
+    }
+    i++;
+  }
+}
 void update_inventory()
 {
   int i;
@@ -149,7 +191,7 @@ void print()
 {
   printf("Test");
 }
-
+/*Samarth when building the main after calling the printing of bill call goodjob(id) make an id variable in main and input it inthe start of the program*/
 int main()
 {
   return 0;
