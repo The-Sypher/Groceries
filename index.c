@@ -50,7 +50,7 @@ int check(int id)
 void goodjob(int id)
 {
   FILE *emp,*temp;
-  int i=0,ti;
+  int ti;
   emp=fopen("employees.csv","r");
   temp=fopen("temp.csv","w");
   char line[100],newline[100],*t;
@@ -70,7 +70,6 @@ void goodjob(int id)
       strcpy(newline,"\n");
       fprintf(temp,newline);
     }
-    i++;
   }
   remove("employees.csv");
   rename("temp.csv","employees.csv");
