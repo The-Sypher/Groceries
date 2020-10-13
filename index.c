@@ -47,6 +47,15 @@ int check(int id)
   }
   return flag;
 }
+void update_item_quantity_after_sale()
+{
+  int i;
+  for(i=0;i<54;i++)
+  {
+    item[bill.item_number[i] - 101].item_quantity = item[bill.item_number[i] - 101].item_quantity - bill.item_quantity[i];
+  }
+  inventory_updation();
+}
 void goodjob(int id)
 {
   FILE *emp,*temp;
