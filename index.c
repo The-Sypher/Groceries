@@ -68,10 +68,12 @@ void goodjob(int id)
       strcat(newline,t);
       strcpy(newline,strtok(NULL,"\n"));
       strcpy(newline,"\n");
-      fprintf(emp,newline);
+      fprintf(temp,newline);
     }
     i++;
   }
+  remove("employees.csv");
+  rename("temp.csv","employees.csv");
 }
 void update_inventory()
 {
