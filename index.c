@@ -54,7 +54,6 @@ void after_goodjob()
   rename("temp.csv","employees.csv");
 }
 
-
 void goodjob(int id)
 {
   FILE *emp,*newfile;
