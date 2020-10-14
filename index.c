@@ -47,33 +47,83 @@ int check(int id)
   }
   return flag;
 }
-void goodjob(int id)
+
+void after_goodjob()
 {
-  FILE *emp,*temp;
-  int ti;
-  emp=fopen("employees.csv","r");
-  temp=fopen("temp.csv","w");
-  char line[100],newline[100],*t;
-  while(fgets(line,100,emp))
-  {
-    t=strtok(line,",");
-    if((int)t!=id)
-      fprintf(temp,"%s\n",line);
-    else
-    {
-      strcat(newline,t);
-      t=strtok(NULL,",");
-      ti=1+atoi(t);
-      sprintf(t,"%d",ti);
-      strcat(newline,t);
-      strcpy(newline,strtok(NULL,"\n"));
-      strcpy(newline,"\n");
-      fprintf(temp,newline);
-    }
-  }
   remove("employees.csv");
   rename("temp.csv","employees.csv");
 }
+
+void goodjob(int id)
+{
+  FILE *emp,*newfile;
+  int ti;
+  emp=fopen("employees.csv","r");
+  newfile=fopen("temp.csv","w");
+  char line[100],newline[100],*temp;
+  memset(newline,0,sizeof(newline));
+  while(fgets(line,100,emp))
+  {
+    temp=strtok(line,",");
+    ti=atoi(temp);
+    if(ti!=id)
+    {
+      strcat(newline,temp);
+      strcat(newline,",");
+      temp=strtok(NULL,",");
+      strcat(newline,temp);
+      strcat(newline,",");
+      strcat(newline,strtok(NULL,"\n"));
+      strcat(newline,"\n");
+      fprintf(newfile,newline);
+      memset(newline,0,sizeof(newline));
+    }
+    else
+    {
+      strcat(newline,temp);
+      strcat(newline,",");
+      temp=strtok(NULL,",");
+      ti=1+atoi(temp);
+      sprintf(temp,"%d",ti);
+      strcat(newline,temp);
+      strcat(newline,",");
+      strcat(newline,strtok(NULL,"\n"));
+      strcat(newline,"\n");
+      fprintf(newfile,newline);
+      memset(newline,0,sizeof(newline));
+    }
+  }
+  fclose(emp);
+  fclose(newfile);
+  /*FILE *emp,*temp;
+  int ti;
+  emp=fopen("employees.csv","r");
+  temp=fopen("temp.csv","w");
+  char line[100],newline[100]="",*t;
+  while(fgets(line,100,emp))
+  {
+    t=strtok(line,",");
+    ti=atoi(t);                         Do not delete this or uncomment this
+    if(ti!=id)                          This is intentionally left this way
+    {                                   By parnav
+      strcat(newline,t);
+      strcat(newline,",");
+      t=strtok(NULL,",");
+      ti=1+atoi(t);t=0;
+      sprintf(t,"%d",ti);
+      strcat(newline,t);
+      strcat(newline,",");
+      strcat(newline,strtok(NULL,"\n"));
+      strcat(newline,"\n");
+      fprintf(temp,newline);
+    }
+    else
+    {
+      fprintf(temp,"%shmm\n",line);
+    }
+  }*/
+}
+
 void update_inventory()
 {
   int i;
