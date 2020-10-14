@@ -49,40 +49,99 @@ int check(int id)
   }
   return flag;
 }
+
+void after_goodjob()
+{
+  remove("employees.csv");
+  rename("temp.csv","employees.csv");
+}
+
 void goodjob(int id)
 {
-  FILE *emp,*temp;
-  int i=0,ti;
+  FILE *emp,*newfile;
+  int ti;
+  emp=fopen("employees.csv","r");
+  newfile=fopen("temp.csv","w");
+  char line[100],newline[100],*temp;
+  memset(newline,0,sizeof(newline));
+  while(fgets(line,100,emp))
+  {
+    temp=strtok(line,",");
+    ti=atoi(temp);
+    if(ti!=id)
+    {
+      strcat(newline,temp);
+      strcat(newline,",");
+      temp=strtok(NULL,",");
+      strcat(newline,temp);
+      strcat(newline,",");
+      strcat(newline,strtok(NULL,"\n"));
+      strcat(newline,"\n");
+      fprintf(newfile,newline);
+      memset(newline,0,sizeof(newline));
+    }
+    else
+    {
+      strcat(newline,temp);
+      strcat(newline,",");
+      temp=strtok(NULL,",");
+      ti=1+atoi(temp);
+      sprintf(temp,"%d",ti);
+      strcat(newline,temp);
+      strcat(newline,",");
+      strcat(newline,strtok(NULL,"\n"));
+      strcat(newline,"\n");
+      fprintf(newfile,newline);
+      memset(newline,0,sizeof(newline));
+    }
+  }
+  fclose(emp);
+  fclose(newfile);
+  /*FILE *emp,*temp;
+  int ti;
   emp=fopen("employees.csv","r");
   temp=fopen("temp.csv","w");
-  char line[100],newline[100],*t;
+  char line[100],newline[100]="",*t;
   while(fgets(line,100,emp))
   {
     t=strtok(line,",");
-    if((int)t!=id)
-      fprintf(temp,"%s\n",line);
-    else
-    {
+    ti=atoi(t);                         Do not delete this or uncomment this
+    if(ti!=id)                          This is intentionally left this way
+    {                                   By parnav
       strcat(newline,t);
+      strcat(newline,",");
       t=strtok(NULL,",");
-      ti=1+atoi(t);
+      ti=1+atoi(t);t=0;
       sprintf(t,"%d",ti);
       strcat(newline,t);
-      strcpy(newline,strtok(NULL,"\n"));
-      strcpy(newline,"\n");
-      fprintf(emp,newline);
+      strcat(newline,",");
+      strcat(newline,strtok(NULL,"\n"));
+      strcat(newline,"\n");
+      fprintf(temp,newline);
     }
-    i++;
-  }
+    else
+    {
+      fprintf(temp,"%shmm\n",line);
+    }
+  }*/
 }
-void update_inventory()
+void showsales(int id)
 {
-  int i;
-  for(i=0;i<54;i++)
+  FILE *emp;
+  int temp;
+  emp=fopen("employees.csv","r");
+  char line[100];
+  while(fgets(line,100,emp))
   {
-    item[i].item_quantity = item[i].item_quantity - bill.item_quantity[i];
+    temp=atoi(strtok(line,","));
+    if(temp==id)
+    {
+      printf("Number of sales made by this person:%d",atoi(strtok(line,",")));
+      break;
+    }
   }
 }
+
 bool check_if_possible(int item_number, int quantity)
 {
   if(item[item_number-101].item_quantity >=  quantity)
@@ -189,6 +248,17 @@ void inventory_updation()
     }
   }
 }
+
+void update_item_quantity_after_sale()
+{
+  int i;
+  for(i=0;i<54;i++)
+  {
+    item[bill.item_number[i] - 101].item_quantity = item[bill.item_number[i] - 101].item_quantity - bill.item_quantity[i];
+  }
+  inventory_updation();
+}
+
 void print()
 {
   printf("Test");
