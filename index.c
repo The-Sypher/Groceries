@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-int index=0;
 struct INVENTORY
 {
   char item_name[50];
@@ -12,9 +11,7 @@ struct INVENTORY
   float item_price;
   struct INVENTORY *next;
 }item[53];
-//if 5 apple item_number [0]=appple code
-//              item quantity of [0]=5
-//    item [item_number[0]-101].item_mrp
+
 struct MEMBER
 {
   char name[50];
@@ -22,8 +19,7 @@ struct MEMBER
   int number_of_donation;
 }mem[100];
 int mem_count;
-int mem_index;
-//hellllo
+
 struct INVOICE
 {
   float subtotal;
@@ -144,6 +140,16 @@ void showsales(int id)
   }
 }
 
+
+
+void update_inventory()
+{
+  int i;
+  for(i=0;i<54;i++)
+  {
+    item[i].item_quantity = item[i].item_quantity - bill.item_quantity[i];
+  }
+}
 bool check_if_possible(int item_number, int quantity)
 {
   if(item[item_number-101].item_quantity >=  quantity)
@@ -181,7 +187,6 @@ void member_reading()
       mem[i].number_of_donation = atoi(field);
 
       mem_count++;
-      mem_index++;
     }
   }
 }
@@ -374,5 +379,13 @@ int main()
     printf("INVALID ID ");
   }
 
+
+void print()
+{
+  printf("Test");
+}
+/*Samarth when building the main after calling the printing of bill call goodjob(id) make an id variable in main and input it inthe start of the program*/
+int main()
+{
   return 0;
 }
