@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-int index=0;
 struct INVENTORY
 {
   char item_name[50];
@@ -12,9 +11,7 @@ struct INVENTORY
   float item_price;
   struct INVENTORY *next;
 }item[53];
-//if 5 apple item_number [0]=appple code
-//              item quantity of [0]=5
-//    item [item_number[0]-101].item_mrp
+
 struct MEMBER
 {
   char name[50];
@@ -22,8 +19,7 @@ struct MEMBER
   int number_of_donation;
 }mem[100];
 int mem_count;
-int mem_index;
-//hellllo
+
 struct INVOICE
 {
   float subtotal;
@@ -144,6 +140,16 @@ void showsales(int id)
   }
 }
 
+
+
+void update_inventory()
+{
+  int i;
+  for(i=0;i<54;i++)
+  {
+    item[i].item_quantity = item[i].item_quantity - bill.item_quantity[i];
+  }
+}
 bool check_if_possible(int item_number, int quantity)
 {
   if(item[item_number-101].item_quantity >=  quantity)
@@ -181,7 +187,6 @@ void member_reading()
       mem[i].number_of_donation = atoi(field);
 
       mem_count++;
-      mem_index++;
     }
   }
 }
@@ -266,122 +271,8 @@ void print()
 {
   printf("Test");
 }
-
-void add_item(int id, int quantity)
-{
-if(check_if_possible(id,quantity))
-{
-  printf("ITEM ADDED!!\n");
-  bill.item_quantity[index]=quantity;
-  bill.item_number[index]=id;
-  index++;
-}
-else
-{
-printf("NOT ENOUGH ITEMS AVAILABLE!!\n")
-}
-
-}
-
-void add_member(char c[],int id)
-{
-mem[mem_index].name;
-strcpy
-}
-
-
-
 /*Samarth when building the main after calling the printing of bill call goodjob(id) make an id variable in main and input it inthe start of the program*/
 int main()
 {
-// employee login
-//          new customer
-//              member,or not(if not add?)
-//              add items to the bill .line 84.
-//              create bill(discount , gst)
-//check sales
-//2nd screen
-struct MEMBER a;
-   int s,num,k,m,q,t;
-printf("\t\t\t\t#########  WELCOME HUMAN  ##########\n");
-
-printf("\n\nENTER EMPLOYEE LOGIN ID: ");
-scanf("%d",&num );
-if(num==007){system("cls");
-   printf("\n___________________________________________");
-   printf("\n******************MENU*********************");
-   printf("\n___________________________________________\n ");
-do{
-
-printf("\nMENU:\n1.NEW CUSTOMER \n2.CHECK INVERNTORY \n3.UPDATE INVENTORY \n4.EXIT: ") ;
-scanf("%d",&s );
-switch(s){
-  case 1:inventory_reading();
-     {system("cls");
-     printf("\n__________________________________________");
-   printf("\n****************MENU--NEW CUSTOMER**********");
-   printf("\n____________________________________________\n ");
-          printf("\nMENU/NEW CUSTOMER:\n1.EXISTING MEMBER \n2.ADD MEMBER \n3.GO BACK: ") ;
-          scanf("%d",&k );
-          if(k==1)
-          {
-              printf(" \nEXIST MEMBER\n");
-              printf("ID OF MEMBER##### ");
-              printf(" ADD ITEMSS:\n");
-              do{
-                printf("ENTER 0 TO PRINT BILL:");
-              printf("ENTER ITEM NUMBER:");
-              scanf("%d",&m);
-              printf("ENTER QUANTITY:");
-              scanf("%d",&q);
-            add_item(m,q);
-          }while(m!=0);
-
-          }
-          if(k==2)
-          {
-              printf("\nADD MEMBER\n");
-              printf("ENTER THE NAME OF MEMBER: ");
-              scanf("%d",&a.name );
-              fflush(stdin);
-               printf("ENTER THE id OF MEMBER: ");
-               scanf("%d",&a.id);
-               fflush(stdin);
-                a.number_of_donation=0;
-          }
-          break;
-     };
-     case 2:
-    {
-        printf("\nCHECK INVENTORY!!\n ");
-
-
-        break;
-
-    }
-  case 3:
-   {
-       printf("\nUPDATE INVENTORY!!\n ");
-       inventory_updation();
-       break;
-   }
-case 4:{
-       exit(0);
-}
-}
-}while(s!=4);
-
- }
-
-
-
-
-else {printf("INVALID ID ");
-
-}
-
-return 0;
-
-
   return 0;
 }
