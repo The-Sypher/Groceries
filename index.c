@@ -273,6 +273,77 @@ int main()
 //              create bill(discount , gst)
 //check sales
 //2nd screen
+struct MEMBER a;
+   int s,num,k;
+printf("\t\t\t\t#########  WELCOME HUMAN  ##########\n");
+
+printf("\n\nENTER EMPLOYEE LOGIN ID: ");
+scanf("%d",&num );
+if(num==007){system("cls");
+   printf("\n___________________________________________");
+   printf("\n******************MENU*********************");
+   printf("\n___________________________________________\n ");
+do{
+
+printf("\nMENU:\n1.NEW CUSTOMER \n2.CHECK INVERNTORY \n3.UPDATE INVENTORY \n4.EXIT: ") ;
+scanf("%d",&s );
+switch(s){
+  case 1:
+     {system("cls");
+     printf("\n__________________________________________");
+   printf("\n****************MENU--NEW CUSTOMER**********");
+   printf("\n____________________________________________\n ");
+          printf("\nMENU/NEW CUSTOMER:\n1.EXISTING MEMBER \n2.ADD MEMBER \n3.GO BACK: ") ;
+          scanf("%d",&k );
+          if(k==1)
+          {
+              printf(" \nEXIST MEMBER\n");
+              printf("ID OF MEMBER##### ");
+              printf(" ADD ITEMSS:::::(bool check_if_possible(int item_number, int quantity)\n");
+              a.number_of_donation++;
+             printf("\nTOTAL DONATIONS:%d ",a.number_of_donation);
+
+          }
+          if(k==2)
+          {
+              printf("\nADD MEMBER\n");
+              printf("ENTER THE NAME OF MEMBER: ");
+              scanf("%d",&a.name );
+              fflush(stdin);
+               printf("ENTER THE id OF MEMBER: ");
+               scanf("%d",&a.id);
+               fflush(stdin);
+                a.number_of_donation=0;
+          }
+          break;
+     };
+     case 2:
+    {
+        printf("\nCHECK INVENTORY!!\n ");
+        break;
+
+    }
+  case 3:
+   {
+       printf("\nUPDATE INVENTORY!!\n ");
+       break;
+   }
+case 4:{
+       exit(0);
+}
+}
+}while(s!=4);
+
+ }
+
+
+
+
+else {printf("INVALID ID ");
+
+}
+
+return 0;
 
 
   return 0;
