@@ -123,7 +123,22 @@ void goodjob(int id)
     }
   }*/
 }
-
+void showsales(int id)
+{
+  FILE *emp;
+  int temp;
+  emp=fopen("employees.csv","r");
+  char line[100];
+  while(fgets(line,100,emp))
+  {
+    temp=atoi(strtok(line,","));
+    if(temp==id)
+    {
+      printf("Number of sales made by this person:%d",atoi(strtok(line,",")));
+      break;
+    }
+  }
+}
 void update_inventory()
 {
   int i;
