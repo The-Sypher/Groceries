@@ -29,7 +29,7 @@ struct INVOICE
   float total;
   int item_number[53];
   int item_quantity[53];
-  char cust_name[];
+  char cust_name[50];
 }bill;
 
 int check(int id)
