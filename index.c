@@ -11,7 +11,9 @@ struct INVENTORY
   float item_price;
   struct INVENTORY *next;
 }item[53];
-
+//if 5 apple item_number [0]=appple code
+//              item quantity of [0]=5
+//    item [item_number[0]-101].item_mrp
 struct MEMBER
 {
   char name[50];
@@ -194,5 +196,14 @@ void print()
 /*Samarth when building the main after calling the printing of bill call goodjob(id) make an id variable in main and input it inthe start of the program*/
 int main()
 {
+// employee login
+//          new customer
+//              member,or not(if not add?)
+//              add items to the bill .line 84.
+//              create bill(discount , gst)
+//check sales
+//2nd screen
+
+
   return 0;
 }
