@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+int index;
 struct INVENTORY
 {
   char item_name[50];
@@ -281,13 +282,6 @@ void add_item(int id, int quantity)
   }
 }
 
-void add_member(char c[],int id)
-{
-mem[mem_index].name;
-}
-
-
-
 /*Samarth when building the main after calling the printing of bill call goodjob(id) make an id variable in main and input it inthe start of the program*/
 int main()
 {
@@ -378,14 +372,5 @@ int main()
   {
     printf("INVALID ID ");
   }
-
-
-void print()
-{
-  printf("Test");
-}
-/*Samarth when building the main after calling the printing of bill call goodjob(id) make an id variable in main and input it inthe start of the program*/
-int main()
-{
   return 0;
 }
