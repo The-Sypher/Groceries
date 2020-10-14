@@ -311,7 +311,7 @@ int main()
       scanf("%d", &s);
       switch (s)
       {
-      case 1:
+        case 1:
         inventory_reading();
         {
           system("cls");
@@ -348,22 +348,21 @@ int main()
           }
           break;
         };
-      case 2:
-      {
-        printf("\nCHECK INVENTORY!!\n ");
-
-        break;
-      }
-      case 3:
-      {
-        printf("\nUPDATE INVENTORY!!\n ");
-        inventory_updation();
-        break;
-      }
-      case 4:
-      {
-        exit(0);
-      }
+        case 2:
+        {
+          printf("\nCHECK INVENTORY!!\n ");
+          break;
+        }
+        case 3:
+        {
+          printf("\nUPDATE INVENTORY!!\n ");
+          inventory_updation();
+          break;
+        }
+        case 4:
+        {
+          exit(0);
+        }
       }
     } while (s != 4);
   }
