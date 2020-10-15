@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-int index;
+int indx;
 struct INVENTORY
 {
   char item_name[50];
@@ -272,9 +272,9 @@ void add_item(int id, int quantity)
   if(check_if_possible(id,quantity))
   {
     printf("ITEM ADDED!!\n");
-    bill.item_quantity[index]=quantity;
-    bill.item_number[index]=id;
-    index++;
+    bill.item_quantity[indx]=quantity;
+    bill.item_number[indx]=id;
+    indx++;
   }
   else
   {
