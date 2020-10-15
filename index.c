@@ -282,6 +282,44 @@ void add_item(int id, int quantity)
   }
 }
 
+
+void print_bill()
+{
+    for(i=0;i<indx;i++)
+    {
+        bill.subtotal=item[bill.item_number[i]-101].item_MRP*bill.item_q[i];
+    }
+    bill.gst=bill.subtotal*0.18;
+    bill.total=bill.subtotal+bill.gst;
+
+    char a[]="Item Name";
+    char b[]="Item Number";
+    char c[]="Units";
+    char d[]="MRP";
+    char e[]="Our Price";
+    char f[]="Total";
+    char g[]="Subtotal";
+    char h[]="GST";
+    int i,num=5;
+    printf("|________________________________________________________________________________________________________|\n");
+    printf("|**************************************************INVOICE***********************************************|\n\n");
+
+
+
+    printf("|%20s|%20s|%20s|%20s|%20s|\n",a,b,c,d,e);
+    for(i=0;i<num;i++){
+    printf("|%20s|%20d|%20d|%20.2f|%20.2f|\n",item[0].item_name,item[bill.item_number[0]-101].item_no,bill.item_q[0],item[bill.item_number[0]-101].item_MRP,item[bill.item_number[0]-101].item_price);
+}
+    printf("|---------------------------------------------------------------------------------------------------------\n");
+    printf("                                                                                                __________\n");
+    printf("%86s%20.2f\n",g,bill.subtotal);
+    printf("%86s%20.2f\n",h,bill.gst);
+    printf("%86s%20.2f\n",f,bill.total);
+    printf("                                                                                                __________\n");
+}
+
+
+
 /*Samarth when building the main after calling the printing of bill call goodjob(id) make an id variable in main and input it inthe start of the program*/
 int main()
 {
