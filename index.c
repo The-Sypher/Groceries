@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <Windows.h>
 int indx = -1;
 int mem_index;
 struct INVENTORY
@@ -33,6 +34,73 @@ struct INVOICE
   char cust_name[50];
 }bill;
 
+void after_goodjob()
+{
+  remove("employees.csv");
+  rename("temp.csv","employees.csv");
+}
+
+void checkDate()
+{
+  FILE *f;
+  f=fopen("date.txt","r");
+  int a[3],b[3];
+  SYSTEMTIME t;
+  GetLocalTime(&t);
+  a[0]=t.wDay;
+  a[1]=t.wMonth;
+  a[2]=t.wYear;
+  char l[15];
+  fgets(l,15,f);
+  b[0]=atoi(strtok(l,"/"));
+  b[1]=atoi(strtok(NULL,"/"));
+  b[2]=atoi(strtok(NULL,"\n"));
+  fgets(l,2,f);
+  int flag=atoi(strtok(l,"\n"));
+  if(a[0]==b[0]&&flag==1)
+  {
+    printf("1");
+    FILE *emp,*newfile;
+    int ti;
+    emp=fopen("employees.csv","r");
+    newfile=fopen("temp.csv","w");
+    char line[100],newline[100],*temp;
+    memset(newline,0,sizeof(newline));
+    while(fgets(line,100,emp))
+    {
+      temp=strtok(line,",");
+      strcat(newline,temp);
+      strcat(newline,",");
+      temp=strtok(NULL,",");
+      ti=0;
+      sprintf(temp,"%d",ti);
+      strcat(newline,temp);
+      strcat(newline,",");
+      strcat(newline,strtok(NULL,"\n"));
+      strcat(newline,"\n");
+      fprintf(newfile,newline);
+      memset(newline,0,sizeof(newline));
+    }
+    fclose(emp);
+    fclose(newfile);
+    fclose(f);
+    FILE *n;
+    n=fopen("date.txt","w");
+    fprintf(n,"%d/%d/%d\n0",b[0],b[1],b[2]);
+    fclose(n);
+    after_goodjob();
+  }
+  else if(a[0]!=b[0])
+  {
+    printf("2");
+    fclose(f);
+    FILE *n;
+    n=fopen("date.txt","w");
+    fprintf(n,"%d/%d/%d\n1",b[0],b[1],b[2]);
+    fclose(n);
+  }
+}
+
 int check(int id)
 {
   FILE *emp;
@@ -48,12 +116,6 @@ int check(int id)
     }
   }
   return flag;
-}
-
-void after_goodjob()
-{
-  remove("employees.csv");
-  rename("temp.csv","employees.csv");
 }
 
 void goodjob(int id)
@@ -97,33 +159,6 @@ void goodjob(int id)
   }
   fclose(emp);
   fclose(newfile);
-  /*FILE *emp,*temp;
-  int ti;
-  emp=fopen("employees.csv","r");
-  temp=fopen("temp.csv","w");
-  char line[100],newline[100]="",*t;
-  while(fgets(line,100,emp))
-  {
-    t=strtok(line,",");
-    ti=atoi(t);                         Do not delete this or uncomment this
-    if(ti!=id)                          This is intentionally left this way
-    {                                   By parnav
-      strcat(newline,t);
-      strcat(newline,",");
-      t=strtok(NULL,",");
-      ti=1+atoi(t);t=0;
-      sprintf(t,"%d",ti);
-      strcat(newline,t);
-      strcat(newline,",");
-      strcat(newline,strtok(NULL,"\n"));
-      strcat(newline,"\n");
-      fprintf(temp,newline);
-    }
-    else
-    {
-      fprintf(temp,"%shmm\n",line);
-    }
-  }*/
 }
 
 void showsales(int id)
@@ -333,6 +368,10 @@ int main()
   //              create bill(discount , gst)
   //check sales
   //2nd screen
+
+  //change by Parnav keep the following line the first line of main
+  checkDate();
+
   int s, num, k, m, q, t;
   char x;
   printf("\t\t\t\t#########  Welcome Human  ##########\n");
@@ -396,11 +435,11 @@ int main()
           }
           system("cls");
         break;
-        
+
         case 2:
           print_inventory();
         break;
-        
+
         case 3:
         break;
 
@@ -408,7 +447,7 @@ int main()
           exit(0);
         break;
 
-        default: 
+        default:
           printf("Wrong Input");
         break;
       }
