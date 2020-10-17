@@ -4,7 +4,6 @@
 #include <stdbool.h>
 #include <Windows.h>
 int indx = -1;
-int mem_index;
 int employee_num;
 int s, num, k, m, q, t,i;
 char x;
