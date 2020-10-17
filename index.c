@@ -57,6 +57,32 @@ struct INVOICE
   char cust_name[50];
 }bill;
 
+void afterBill()
+{
+  FILE *f;
+  f=fopen("sold.csv","r");
+  float profit;
+  char line[100],*l;
+  fgets(line,100,f);
+  l=strtok(line,"\n");
+  profit=atof(l);
+  for(int i=0;i<indx;i++)
+    profit+=(item[bill.item_number[i]-101].item_MRP-item[bill.item_number[i]-101].item_price)*bill.item_q[i];
+  fclose(f);
+  f=fopen("sold.csv","w");
+  fprintf(f,"%0.2f",profit);
+  fclose(f);
+}
+void printProfit()
+{
+  FILE *f;
+  f=fopen("sold.csv","r");
+  char line[100],*l;
+  fgets(line,100,f);
+  l=strtok(line,"\n");
+  printf("Your profit this month: %s",l);
+  fclose(f);
+}
 void after_goodjob()
 {
   remove("employees.csv");
@@ -111,6 +137,9 @@ void checkDate()
     fprintf(n,"%d/%d/%d\n0",b[0],b[1],b[2]);
     fclose(n);
     after_goodjob();
+    n=fopen("sold.csv","w");
+    fprintf(n, "0");
+    fclose(n);
   }
   else if(a[0]!=b[0])
   {
@@ -447,7 +476,7 @@ void call()
           printf(" \nExisting Member\n");
           printf("ID OF MEMBER: ");
           scanf("%d", &mem_index);
-          
+
 
           make_bill();
         }
@@ -528,8 +557,9 @@ int main()
   //2nd screen
 
   //change by Parnav keep the following line the first line of main
-  checkDate();
+  /*checkDate();
   inventory_reading();
-  start();
+  start();*/
+  afterBill();
   return 0;
 }
