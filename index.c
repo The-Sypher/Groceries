@@ -557,9 +557,9 @@ int main()
   //2nd screen
 
   //change by Parnav keep the following line the first line of main
-  /*checkDate();
+  checkDate();
   inventory_reading();
-  start();*/
+  start();
   afterBill();
   return 0;
 }
