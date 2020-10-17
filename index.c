@@ -24,7 +24,27 @@ struct MEMBER
   int id;
   int number_of_donation;
 }mem[100];
-int mem_count;
+int mem_count=0;
+int mem_index=0;
+
+void add_member()
+{
+  printf("ENTER THE NAME OF THE MEMBER: \n");
+  gets(mem[mem_index].name);
+  mem[mem_index].id=mem_index+100;
+  mem[mem_index].number_of_donation=0 ;
+}
+
+void print_donation(int id)
+{
+  printf("THE NUMBER OF DONATIONS MADE BY THE MEMBER: %d\n",  mem[id-100].number_of_donation);
+
+}
+
+void member_donate(int id)
+{
+   mem[id-100].number_of_donation;
+}
 
 struct INVOICE
 {
@@ -62,7 +82,6 @@ void checkDate()
   int flag=atoi(strtok(l,"\n"));
   if(a[0]==b[0]&&flag==1)
   {
-    printf("1");
     FILE *emp,*newfile;
     int ti;
     emp=fopen("employees.csv","r");
@@ -95,7 +114,7 @@ void checkDate()
   }
   else if(a[0]!=b[0])
   {
-    printf("2");
+
     fclose(f);
     FILE *n;
     n=fopen("date.txt","w");
@@ -162,6 +181,7 @@ void goodjob(int id)
   }
   fclose(emp);
   fclose(newfile);
+  after_goodjob();
 }
 
 void showsales(int id)
@@ -183,7 +203,7 @@ void showsales(int id)
 
 void update_inventory()
 {
-  
+
   for(i=0;i<54;i++)
   {
     item[i].item_quantity = item[i].item_quantity - bill.item_q[i];
@@ -228,6 +248,7 @@ void member_reading()
       mem[i].number_of_donation = atoi(field);
 
       mem_count++;
+      mem_index++;
     }
   }
 }
@@ -290,7 +311,7 @@ void inventory_updation()
   }
   else
   {
-    
+
     for(i=0;i<54;i++)
     {
       fprintf(data , "%s,%d,%d,%0.2f,%0.2f\n", item[i].item_name, item[i].item_no,item[i].item_quantity,item[i].item_MRP, item[i].item_price);
@@ -301,7 +322,7 @@ void inventory_updation()
 
 void update_item_quantity_after_sale()
 {
-  
+
   for(i=0;i<indx;i++)
   {
     item[bill.item_number[i] - 101].item_quantity = item[bill.item_number[i] - 101].item_quantity - bill.item_q[i];
@@ -326,7 +347,7 @@ void add_item(int id, int quantity)
 
 void print_bill()
 {
-    
+
     for(i=0;i<indx;i++)
     {
         bill.subtotal += item[bill.item_number[i]-101].item_MRP*bill.item_q[i];
@@ -363,14 +384,14 @@ void print_inventory()
   char b[] = "Item Name";
   char c[] = "Quantity Left";
   printf("%10s%20s%20s\n",a,b,c);
-  
+
   for(i=0;i<54;i++)
   {
     printf("%10d%20s%20d\n",item[i].item_no,item[i].item_name,item[i].item_quantity);
   }
 }
 void make_bill()
-{
+{int flag;
   do
   {
     system("cls");
@@ -389,6 +410,12 @@ void make_bill()
 
   print_bill();
   update_item_quantity_after_sale();
+  printf("DO YOU WANT TO DONATE  Rs.5  TO THE CHARITY?");
+  scanf("%d",&flag);
+  if(flag)
+  {
+    member_donate(mem_index);
+  }
   printf("Press any key to continue.....\n");
   scanf("%s", &x);
 }
@@ -420,18 +447,15 @@ void call()
           printf(" \nExisting Member\n");
           printf("ID OF MEMBER: ");
           scanf("%d", &mem_index);
+          
+
           make_bill();
         }
         if (k == 2)
         {
           printf("\n***Add Member***\n");
-          printf("ENTER THE NAME OF MEMBER: ");
-          fflush(stdin);
-          scanf("%s", &mem[mem_index].name);
-          printf("ENTER THE id OF MEMBER: ");
-          fflush(stdin);
-          scanf("%s", &mem[mem_index].id);
-          mem[mem_index].number_of_donation = 0;
+          add_member();
+
           make_bill();
         }
         system("cls");
