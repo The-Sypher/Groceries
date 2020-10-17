@@ -5,6 +5,9 @@
 #include <Windows.h>
 int indx = -1;
 int mem_index;
+int employee_num;
+int s, num, k, m, q, t,i;
+char x;
 struct INVENTORY
 {
   char item_name[50];
@@ -180,7 +183,7 @@ void showsales(int id)
 
 void update_inventory()
 {
-  int i;
+  
   for(i=0;i<54;i++)
   {
     item[i].item_quantity = item[i].item_quantity - bill.item_q[i];
@@ -287,21 +290,23 @@ void inventory_updation()
   }
   else
   {
-    int i=0;
+    
     for(i=0;i<54;i++)
     {
       fprintf(data , "%s,%d,%d,%0.2f,%0.2f\n", item[i].item_name, item[i].item_no,item[i].item_quantity,item[i].item_MRP, item[i].item_price);
     }
   }
+  fclose(data);
 }
 
 void update_item_quantity_after_sale()
 {
-  int i;
-  for(i=0;i<54;i++)
+  
+  for(i=0;i<indx;i++)
   {
     item[bill.item_number[i] - 101].item_quantity = item[bill.item_number[i] - 101].item_quantity - bill.item_q[i];
   }
+  indx = -1;
   inventory_updation();
 }
 
@@ -310,7 +315,6 @@ void add_item(int id, int quantity)
   if(check_if_possible(id,quantity))
   {
     indx++;
-    printf("ITEM ADDED!!\n");
     bill.item_q[indx]=quantity;
     bill.item_number[indx]=id;
   }
@@ -322,7 +326,7 @@ void add_item(int id, int quantity)
 
 void print_bill()
 {
-    int i;
+    
     for(i=0;i<indx;i++)
     {
         bill.subtotal += item[bill.item_number[i]-101].item_MRP*bill.item_q[i];
@@ -355,9 +359,139 @@ void print_bill()
 
 void print_inventory()
 {
-
+  char a[] = "Item Code";
+  char b[] = "Item Name";
+  char c[] = "Quantity Left";
+  printf("%10s%20s%20s\n",a,b,c);
+  
+  for(i=0;i<54;i++)
+  {
+    printf("%10d%20s%20d\n",item[i].item_no,item[i].item_name,item[i].item_quantity);
+  }
 }
+void make_bill()
+{
+  do
+  {
+    system("cls");
+    printf("Enter (0) To Print Bill\n\n");
+    printf("Add Items\n");
+    printf("Item number:\n");
+    scanf("%d", &m);
+    if (m != 0)
+    {
+      printf("Quantity:");
+      scanf("%d", &q);
+    }
+    add_item(m, q);
+    system("cls");
+  } while (m != 0);
 
+  print_bill();
+  update_item_quantity_after_sale();
+  printf("Press any key to continue.....\n");
+  scanf("%s", &x);
+}
+void call()
+{
+  char x;
+  if (check(employee_num))
+  {
+    system("cls");
+    printf("\n___________________________________________");
+    printf("\n******************Menu*********************");
+    printf("\n___________________________________________\n\n");
+    do
+    {
+      printf("\nMenu:\n1.New Customer \n2.Check Inventory \n3.Go Back\n4.Exit:\n");
+      scanf("%d", &s);
+      switch (s)
+      {
+      case 1:
+        system("cls");
+        printf("\n__________________________________________");
+        printf("\n****************Menu***************");
+        printf("\n____________________________________________\n ");
+        printf("\n1.Existing Member \n2.Add Member \n3.Go Back: ");
+        scanf("%d", &k);
+
+        if (k == 1)
+        {
+          printf(" \nExisting Member\n");
+          printf("ID OF MEMBER: ");
+          scanf("%d", &mem_index);
+          make_bill();
+        }
+        if (k == 2)
+        {
+          printf("\n***Add Member***\n");
+          printf("ENTER THE NAME OF MEMBER: ");
+          fflush(stdin);
+          scanf("%s", &mem[mem_index].name);
+          printf("ENTER THE id OF MEMBER: ");
+          fflush(stdin);
+          scanf("%s", &mem[mem_index].id);
+          mem[mem_index].number_of_donation = 0;
+          make_bill();
+        }
+        system("cls");
+        break;
+
+      case 2:
+        print_inventory();
+        printf("Press any key to continue....\n");
+        scanf("%s", &x);
+        system("cls");
+        break;
+
+      case 3:
+        printf("Going to Employee Login....\n");
+        employee_num = 7;
+        Sleep(2000);
+        system("cls");
+      break;
+
+      case 4:
+        system("cls");
+        printf("Have a nice day!!\n");
+        Sleep(2000);
+        exit(0);
+        break;
+
+      default:
+        printf("Wrong Input");
+        break;
+      }
+    } while (s != 3 && s != 4);
+  }
+  else
+  {
+    printf("INVALID ID ");
+  }
+}
+void start()
+{
+  do
+  {
+    printf("Enter (0) to exit\n");
+    printf("\n\nEnter Employee Id:");
+    scanf("%d", &employee_num);
+    if (check(employee_num) != 1 && employee_num != 0)
+    {
+      printf("Employee does not exist, Please enter valid id\n");
+      Sleep(2000);
+      system("cls");
+    }
+    else if(employee_num == 0)
+    {
+      system("cls");
+      printf("Have a nice day!!!!");
+      Sleep(2000);
+      exit(0);
+    }
+    call();
+  } while (check(employee_num) != 1 && employee_num != 0);
+}
 /*Samarth when building the main after calling the printing of bill call goodjob(id) make an id variable in main and input it inthe start of the program*/
 int main()
 {
@@ -371,91 +505,7 @@ int main()
 
   //change by Parnav keep the following line the first line of main
   checkDate();
-
-  int s, num, k, m, q, t;
-  char x;
-  printf("\t\t\t\t#########  Welcome Human  ##########\n");
-
-  printf("\n\nEnter Employee Id:");
-  scanf("%d", &num);
-  if (num == 007)
-  {
-    system("cls");
-    printf("\n___________________________________________");
-    printf("\n******************Menu*********************");
-    printf("\n___________________________________________\n ");
-    do
-    {
-
-      printf("\nMenu:\n1.New Customer \n2.Check Inventory \n3.Go Back\n4.Exit:\n");
-      scanf("%d", &s);
-      switch (s)
-      {
-        case 1:
-          inventory_reading();
-          system("cls");
-          printf("\n__________________________________________");
-          printf("\n****************Menu***************");
-          printf("\n____________________________________________\n ");
-          printf("\n1.Existing Member \n2.Add Member \n3.Go Back: ");
-          scanf("%d", &k);
-          if (k == 1)
-          {
-            printf(" \nExisting Member\n");
-            printf("ID OF MEMBER: ");
-            scanf("%d",&mem_index);
-            do
-            {
-              printf("Enter 0 To Print Bill\n");
-              printf("Add Items\n");
-              printf("Item number:");
-              scanf("%d", &m);
-              if(m != 0)
-              {
-                printf("Quantity:");
-                scanf("%d", &q);
-              }
-              add_item(m, q);
-              system("cls");
-            } while (m != 0);
-            print_bill();
-            printf("Press any key to continue.....\n");
-            scanf("%s",&x);
-          }
-          if (k == 2)
-          {
-            printf("\n***Add Member***\n");
-            printf("ENTER THE NAME OF MEMBER: ");
-            fflush(stdin);
-            scanf("%s", &mem[mem_index].name);
-            printf("ENTER THE id OF MEMBER: ");
-            fflush(stdin);
-            scanf("%s", &mem[mem_index].id);
-            mem[mem_index].number_of_donation = 0;
-          }
-          system("cls");
-        break;
-
-        case 2:
-          print_inventory();
-        break;
-
-        case 3:
-        break;
-
-        case 4:
-          exit(0);
-        break;
-
-        default:
-          printf("Wrong Input");
-        break;
-      }
-    } while (s != 3 && s!=4);
-  }
-  else
-  {
-    printf("INVALID ID ");
-  }
+  inventory_reading();
+  start();
   return 0;
 }
