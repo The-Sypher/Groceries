@@ -8,11 +8,15 @@ int employee_num;
 int member_id = -1;
 int s, num, k, m, q, t,i;
 char x;
+int mem_count=0;
+int mem_index=-1;
+
 void press_key_to_continue()
 {
   printf("\n\nPress any key to continue.....\n");
   scanf("%d",&x);
 }
+
 struct INVENTORY
 {
   char item_name[50];
@@ -41,8 +45,36 @@ struct MEMBER
   int number_of_donation;
 }mem[100];
 
-int mem_count=0;
-int mem_index=-1;
+void member_reading()
+{
+  FILE *member;
+  char line[100];
+  char *field;
+  int i = 0;
+  mem_count = 0;
+  member = fopen("members.csv", "r");
+  if (!member)
+  {
+    printf("Error opening file\n");
+  }
+  else
+  {
+    while (fgets(line, 200, member))
+    {
+      field = strtok(line, ",");
+      strcpy(mem[i].name, field);
+
+      field = strtok(NULL, ",");
+      mem[i].id = atoi(field);
+
+      field = strtok(NULL, "\n");
+      mem[i].number_of_donation = atoi(field);
+
+      mem_count++;
+      mem_index++;
+    }
+  }
+}
 
 void member_updation()
 {
@@ -64,19 +96,14 @@ void add_member()
   gets(mem[mem_index].name);
   mem[mem_index].id = mem_index+100;
   mem[mem_index].number_of_donation = 0;
-  member_id = mem[mem_index].id;
   member_updation();
+  member_reading();
 }
 
 void print_donation(int id)
 {
   printf("THE NUMBER OF DONATIONS MADE BY THE MEMBER: %d\n",  mem[id-100].number_of_donation);
 
-}
-
-void member_donate(int id)
-{
-  mem[id-100].number_of_donation++;
 }
 
 void afterBill()
@@ -88,8 +115,10 @@ void afterBill()
   fgets(line,100,f);
   l=strtok(line,"\n");
   profit=atof(l);
-  for(int i=0;i<indx;i++)
+  for(int i=0;i<=indx;i++)
+  {
     profit+=(item[bill.item_number[i]-101].item_MRP-item[bill.item_number[i]-101].item_price)*bill.item_q[i];
+  }
   fclose(f);
   f=fopen("sold.csv","w");
   fprintf(f,"%0.2f",profit);
@@ -109,8 +138,14 @@ void printProfit()
 
 void after_goodjob()
 {
-  remove("employees.csv");
-  rename("temp.csv","employees.csv");
+  if(!remove("employees.csv"))
+  {
+    printf("Unsuccesful");
+  }
+  if(!rename("temp.csv","employees.csv"))
+  {
+    printf("Rename");
+  }
 }
 
 void checkDate()
@@ -214,7 +249,7 @@ void goodjob(int id)
       strcat(newline,",");
       strcat(newline,strtok(NULL,"\n"));
       strcat(newline,"\n");
-      fprintf(newfile,newline);
+      fprintf(newfile,"%s",newline);
       memset(newline,0,sizeof(newline));
     }
     else
@@ -228,13 +263,12 @@ void goodjob(int id)
       strcat(newline,",");
       strcat(newline,strtok(NULL,"\n"));
       strcat(newline,"\n");
-      fprintf(newfile,newline);
+      fprintf(newfile,"%s",newline);
       memset(newline,0,sizeof(newline));
     }
   }
   fclose(emp);
   fclose(newfile);
-  after_goodjob();
 }
 
 void showsales(int id)
@@ -271,37 +305,6 @@ bool check_if_possible(int item_number, int quantity)
   else
   {
     return false;
-  }
-}
-
-void member_reading()
-{
-  FILE *member;
-  char line[100];
-  char *field;
-  int i = 0;
-  mem_count = 0;
-  member = fopen("members.csv", "r");
-  if (!member)
-  {
-    printf("Error opening file\n");
-  }
-  else
-  {
-    while (fgets(line, 200, member))
-    {
-      field = strtok(line, ",");
-      strcpy(mem[i].name, field);
-
-      field = strtok(NULL, ",");
-      mem[i].id = atoi(field);
-
-      field = strtok(NULL, "\n");
-      mem[i].number_of_donation = atoi(field);
-
-      mem_count++;
-      mem_index++;
-    }
   }
 }
 
@@ -353,7 +356,7 @@ void inventory_updation()
   else
   {
 
-    for(i=0;i<54;i++)
+    for(i=0;i<53;i++)
     {
       fprintf(data , "%s,%d,%d,%0.2f,%0.2f\n", item[i].item_name, item[i].item_no,item[i].item_quantity,item[i].item_MRP, item[i].item_price);
     }
@@ -368,8 +371,6 @@ void update_item_quantity_after_sale()
   {
     item[bill.item_number[i] - 101].item_quantity = item[bill.item_number[i] - 101].item_quantity - bill.item_q[i];
   }
-  indx = -1;
-  inventory_updation();
 }
 
 void add_item(int id, int quantity)
@@ -383,6 +384,7 @@ void add_item(int id, int quantity)
   else
   {
     printf("Not enough items available!!\n");
+    Sleep(1500);
   }
 }
 
@@ -397,7 +399,9 @@ void print_bill()
   }
   else
   {
-    strcpy(name,mem[member_id-100].name);
+    printf("%d%s", mem[member_id - 100].id, mem[member_id - 100].name);
+    strcpy(name, mem[member_id - 100].name);
+    Sleep(1500);
   }
   for(i=0;i<=indx;i++)
   {
@@ -415,9 +419,8 @@ void print_bill()
   char g[]="Subtotal";
   char h[]="GST";
   system("cls");
-  printf("%d", item[bill.item_number[i] - 101].item_no);
-      printf("\n________________________________________________________________________________________________________\n");
-  printf("                                                Invoice                                                |\n");
+  printf("\n________________________________________________________________________________________________________\n");
+  printf("                                                Invoice\n");
   printf("________________________________________________________________________________________________________\n");
   printf("Bill to: %s\n",name);
   printf("|--------------------------------------------------------------------------------------------------------|\n");
@@ -441,7 +444,7 @@ void print_inventory()
   char c[] = "Quantity Left";
   printf("%10s%20s%20s\n",a,b,c);
 
-  for(i=0;i<54;i++)
+  for(i=0;i<53;i++)
   {
     printf("%10d%20s%20d\n",item[i].item_no,item[i].item_name,item[i].item_quantity);
   }
@@ -449,65 +452,86 @@ void print_inventory()
 
 void make_bill()
 {
-  int flag;
+  int flag = 0;
   do
   {
     system("cls");
-    printf("Enter (0) To Print Bill\n\n");
+    flag = 0;
+    printf("Enter (0) To Print Bill\n");
+    printf("Enter (1) to go back\n\n");
     printf("Add Items\n");
     printf("Item number:\n");
     scanf("%d", &m);
-    if (m != 0)
+    if (m != 0 && m != 1)
     {
-      printf("Quantity:\n");
-      scanf("%d", &q);
+      if(m < 101 || m > 153)
+      {
+        printf("\nItem Does not exist...\n");
+        Sleep(1500);
+      }
+      else
+      {
+        printf("Quantity:\n");
+        scanf("%d", &q);
+        add_item(m, q);
+        flag = 1;
+      }
     }
-    add_item(m, q);
+    if(m == 1)
+    {
+      flag = 0;
+    }
     system("cls");
-  } while (m != 0 && indx < 0);
+  } while (m != 0 && m != 1 );
 
-  print_bill();
-  update_item_quantity_after_sale();
-  inventory_updation();
-  if(member_id != -1)
+  if(m == 0)
   {
-    printf("Do You Want To Donate Rs.5 to charity?\n1.Yes\2.No\n");
-    scanf("%d",&flag);
-    if(flag == 1)
+    print_bill();
+    update_item_quantity_after_sale();
+    inventory_updation();
+    if (member_id != -1)
     {
-      member_donate(member_id);
-      member_updation();
+      printf("Do You Want To Donate Rs.5 to charity?\n1.Yes\n2.No\n");
+      scanf("%d", &flag);
+      if (flag == 1)
+      {
+        printf("%d",member_id);
+        member_updation();
+      }
+      else
+      {
+        printf("No Problem...Maybe next time....\n");
+      }
     }
-    else 
-    {
-      printf("No Problem...Maybe next time....\n");
-    }
+    goodjob(employee_num);
+    after_goodjob();
+    afterBill();
+    press_key_to_continue();
+    indx = -1;
+    member_id = -1;
   }
-  goodjob(employee_num);
-  afterBill();
-  press_key_to_continue();
 }
 
 void call()
 {
   if (check(employee_num))
   {
-    system("cls");
-    printf("\n___________________________________________");
-    printf("\n                  Menu");
-    printf("\n___________________________________________");
     do
     {
+      system("cls");
+      printf("___________________________________________");
+      printf("\n                  Menu");
+      printf("\n___________________________________________");
       printf("\n1.New Customer \n2.Check Inventory \n3.Go Back\n4.Exit:\n");
       scanf("%d", &s);
       switch (s)
       {
       case 1:
         system("cls");
-        printf("\n__________________________________________");
+        printf("__________________________________________");
         printf("\n                  Menu");
         printf("\n__________________________________________");
-        printf("\n1.Existing Member \n2.Not a Member \n3.Go Back: ");
+        printf("\n1.Existing Member \n2.Not a Member \n3.Go Back: \n");
         scanf("%d", &k);
 
         if (k == 1)
@@ -518,7 +542,7 @@ void call()
             system("cls");
             printf("Enter (0) to Go Back");
             printf(" \nExisting Member\n");
-            printf("ID OF MEMBER: ");
+            printf("Id of member: ");
             scanf("%d", &member_id);
             if(member_id == 0)
             {
@@ -532,6 +556,7 @@ void call()
             }
             else
             {
+              flag = 1;
               make_bill();
             }
           }while(!flag);
@@ -593,7 +618,7 @@ void employee_Login()
   {
     printf("Enter (0) to Go Back\n");
     printf("Enter (1) to Exit\n");
-    printf("\nEnter Employee Id: ");
+    printf("\nEnter Employee Id: \n");
     scanf("%d", &employee_num);
     if (check(employee_num) != 1 && employee_num != 0 && employee_num != 1)
     {
@@ -620,7 +645,7 @@ void start()
   do
   {
     system("cls");
-    printf("Welcome\n\n");
+    printf("         Welcome\n\n");
     printf("1.Employee Login\n2.Check Profits\n3.Check Employee Sales\n4.Check Inventory\n5.Exit\n");
     scanf("%d",&s);
     switch(s)
